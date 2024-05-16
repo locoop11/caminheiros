@@ -17,6 +17,7 @@ class runner ():
         FileHandler = fh.FileHandler()
         connections = FileHandler.readFileConections(self.connectionsFileName)
         network = FileHandler.readFileNetwork(self.networkFileName)
+        network.createGraph()
 
         dicBestConnections = {}
         for conn in connections:

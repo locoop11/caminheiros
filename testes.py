@@ -20,4 +20,4 @@ def getConnectionsList(stringListOfConnecctions):
 listOfConnections = "[(R, 15), (M, 8), (B, 12)]"
 
 conns = getConnectionsList(listOfConnections)
-print(conns)
+print(conns[0])

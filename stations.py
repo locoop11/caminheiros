@@ -10,7 +10,7 @@ class Connection (object):
     def get_nameDestination(self):
         return self.nameDestination
     def __str__(self):
-        return self.nameStarting + " -> " + self.nameDestination
+        return "(" + self.nameStarting +(", ")+ self.nameDestination + ")"
     def __repr__(self):
         return self.__str__()
     
@@ -22,10 +22,7 @@ class ConnectionsList (object):
     def get_connections(self):
         return self.connections
     def __str__(self):
-        return self.__str__()
-    def __repr__(self):
-        return self.__str__()
-
+        return '\n'.join(str(connection) for connection in self.connections)
 
 
 class Station (object):
@@ -34,9 +31,6 @@ class Station (object):
         self.name = name
         self.connected = connected  
         
-
-
-
     def get_id(self):
         return self.id
     def get_name(self):
@@ -47,7 +41,7 @@ class Station (object):
         return self.__str__()
     
 
-class Networok (object):
+class Network (object):
     def __init__(self, network):
         self.network = network
         self.graph = self.createGraph()
