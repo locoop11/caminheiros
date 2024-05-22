@@ -7,7 +7,7 @@ class FileHandler:
     
     
     
-    def readFileConections(self, file_name):
+    def readFileConnections(self, file_name):
         """
         Requires: file_name is a string with the name of the file
         Ensures: a list of objects of class Connections
@@ -28,19 +28,21 @@ class FileHandler:
         Ensures: creates a makes the filter of every line of the file, creates a STATION object 
                 add those objects to a list used to create the network object that is returned
         """
+
         file = open(file_name, 'r')
         networkList = []
         for line in file:
             line = line.strip()
             line = line.split('[')
-            line1 = line[0]
-            line2 = line[1]
-            line2 = "[" + line2
-            line1 = line1.split(', ')
-            line1 = line1[:-1]
-            connectionedList = FileHandler().getConnectionsList(line2)
-            lineList = line1 + [connectionedList]
-            station = stations.Station(lineList[0], lineList[1], lineList[2])
+            stationIdAndNameString = line[0]
+            connectionsString = line[1]
+            connectionsString = "[" + connectionsString
+            stationIdAndNameString = stationIdAndNameString.split(', ')
+            stationIdAndNameString = stationIdAndNameString[:-1]
+            connectionedList = FileHandler().getConnectionsList(connectionsString)
+            stationId = stationIdAndNameString[0]
+            stationName = stationIdAndNameString[1]
+            station = stations.Station(stationId, stationName, connectionedList)
             networkList.append(station)
         network = stations.Network(networkList)     
         file.close()
