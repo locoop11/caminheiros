@@ -11,7 +11,7 @@ class TestConnections(unittest.TestCase):
         connectionsFileName = self.conn_fileName
         conn_list = None
         try:
-            conn_list = FileHandler().readFileConnections(self.connectionsFileName)
+            conn_list = FileHandler().readFileConnections(connectionsFileName)
         except Exception as e:
             errorMessage = f"Error: {str(e)}"
             conn_list = []  # Set conn_list to an empty list or handle the error in an appropriate way
