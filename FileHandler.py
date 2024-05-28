@@ -30,7 +30,7 @@ class FileHandler:
         """
 
         file = open(file_name, 'r')
-        networkList = []
+        stationsList = []
         for line in file:
             line = line.strip()
             line = line.split('[')
@@ -39,12 +39,18 @@ class FileHandler:
             connectionsString = "[" + connectionsString
             stationIdAndNameString = stationIdAndNameString.split(', ')
             stationIdAndNameString = stationIdAndNameString[:-1]
+            #conections work
             connectionedList = FileHandler().getConnectionsList(connectionsString)
+            #station work
             stationId = stationIdAndNameString[0]
             stationName = stationIdAndNameString[1]
             station = stations.Station(stationId, stationName, connectionedList)
-            networkList.append(station)
-        network = stations.Network(networkList)     
+            stationsList.append(station)
+        #create the connectedNodesCostList for every station instead of just having the connectedStringsList
+        for station in stationsList:
+            station.createconnectedNodesCostList(stationsList)
+        #create the network object
+        network = stations.Network(stationsList)     
         file.close()
         return network
     

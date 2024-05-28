@@ -15,24 +15,25 @@ class Node(object):
 
 
 class Edge(object):
-    def __init__(self, src, dest):
+    def __init__(self, src, dest, cost):
         """
         Requires: src and dst Nodes
         """
         self.src = src
         self.dest = dest
+        self.cost = cost
     def getSource(self):
         return self.src
     def getDestination(self):
         return self.dest
+    def getCost(self):
+        return self.cost
     def __str__(self):
-        return self.src.getName() + '->' + self.dest.getName()
-
-
+        return self.src.getName() + '->' + self.dest.getName() + '(' + str(self.cost) + ')'
 
 class Digraph(object):
-    #nodes is a list of the nodes in the graph
-    #edges is a dict mapping each nodfe to a list of its children
+    # nodes is a list of the nodes in the graph
+    # edges is a dict mapping each node to a list of its children
     def __init__(self):
         self.nodes = []
         self.edges = {}
@@ -42,23 +43,17 @@ class Digraph(object):
         else:
             self.nodes.append(node)
             self.edges[node] = []
-    def addEdge (self, edge):
+    def addEdge(self, edge):
         src = edge.getSource()
         dest = edge.getDestination()
+        cost = edge.getCost()
         if not(src in self.nodes and dest in self.nodes):
             raise ValueError('Node not in graph')
-        self.edges[src].append(dest)
+        self.edges[src].append([dest, cost])
     def childrenOf(self, node):
         return self.edges[node]
     def hasNode(self, node):
         return node in self.nodes
-    def __str__(self):
-        result = ''
-        for src in self.nodes:
-            for dest in self.edges[src]:
-                result = result + src.getName() + '->'\
-                + dest.getName() + '\n'
-        return result
 
 class Graph(Digraph):
     def addEdge(self, edge):
