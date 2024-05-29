@@ -57,7 +57,7 @@ class Station (object):
     def get_name(self):
         return self.name
     def get_connectedStringsList(self):
-        return self.connected
+        return self.connectedStringsList
     def get_node(self):
         return self.node
     def get_connectedNodesCostList(self):
