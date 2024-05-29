@@ -73,7 +73,15 @@ class FileHandler:
 
         return connections
 
-
+    def saveBestResults(self, file_name, dicBestConnections):
+        """
+        Requires: file_name is a string with the name of the file
+        Ensures: a file with the best connections
+        """
+        file = open(file_name, 'w')
+        for key in dicBestConnections:
+            file.write(key + ' - ' + str(dicBestConnections[key]) + '\n')
+        file.close()
  
         
 

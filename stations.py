@@ -104,36 +104,19 @@ class Network (object):
         if destination_station == None:
             raise ValueError(connection.get_nameDestination + ' out of the network')
 
-        paths = self.bestPaths(starting_station.get_node(), destination_station.get_node(), 3)
-
-        if len(paths) < 3:
-            raise ValueError('Not enough paths found')
-
-        best_path = paths[0]
-        second_best_path = paths[1]
-        third_best_path = paths[2]
-
-        return [(best_path.getTime(), best_path.getPath()), (second_best_path.getTime(), second_best_path.getPath()), (third_best_path.getTime(), third_best_path.getPath())]
-            
-    def bestPaths(self, start, end, k=3):
-        """
-        Requires:
-        start and end are nodes
-        Ensures:
-        top k shortest paths from start to end in graph
-        """
-        paths = []
-        graph_copy = self.graph.copy()  # Create a copy of the original graph
+        paths = dfs.DFS(starting_station.get_node(), destination_station.get_node(), 3)
         
-        for _ in range(k):
-            shortest = self.DFS(graph_copy, start, end, [], None)
-            if shortest is None:
-                raise ValueError(start + ' and ' + end + ' do not communicate.')
-            paths.append(shortest)
-            # Remove one edge from the shortest path
-            for i in range(len(shortest) - 1):
-                graph_copy.removeEdge(shortest[i], shortest[i + 1])
-        return paths
+        orderedPaths = sorted(paths, key=lambda x: x[1])
+        
+        
+
+            
+
+        
+
+        return orderedPaths
+            
+    
     
 
 
