@@ -56,7 +56,10 @@ class Digraph(object):
                 return
         self.edges[src].append((dest, cost))
     def childrenOf(self, node):
-        return self.edges[node]
+        if node in self.edges:
+            return list(self.edges[node].items())
+        else:
+            return []
     def hasNode(self, node):
         return node in self.nodes
     def __str__(self):
@@ -114,6 +117,9 @@ def DFS(graph, start, end, path, shortest, cost=0, allPaths={}):
                     pathCost = cost - edgeCost
                     shortest = newPath
     return (shortest, allPaths)
+
+def search(graph, start, end):
+    return DFS(graph, start, end, [], None, 0, float('inf'))
 
  
 
