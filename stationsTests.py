@@ -1,6 +1,7 @@
 import unittest
 import depthFirstSearchInGraphCap122 as dfs
 from stations import *
+from FileHandler import FileHandler
 
 
 
@@ -23,29 +24,41 @@ testDataA = [['A', 'Seixal', [('R', 15), ('M', 8), ('B', 12)]],
              ['D', 'Queimadas', [('Z', 18), ('AC', 11)]],
              ['E', 'Ponta do Pargo', [('DW', 13)]]]
 
+nonExistingStationId = "nonexistingStationId"
 
-class TestConnection(unittest.TestCase):
+class TestConnections(unittest.TestCase):
     def setUp(self):
-        self.conn = Connection("Start", "Destination")
+        super().setUp()
+        self.validConnectionsTestFileName = './tests/myStations.txt'
+        self.validConnections = None
 
-    def test_get_nameStarting(self):
-        self.assertEqual(self.conn.get_nameStarting(), "Start")
+        try:
+            self.validConnections = FileHandler().readFileConnections(self.validConnectionsTestFileName)
+        except Exception as e:
+            errorMessage = f"Error: {str(e)}"
+            self.assertTrue(False, "An error occurred while invoking FileHandler().readFileConnections with test file " + self.validConnectionsTestFileName + ". " + errorMessage)
+    
+    def test_connectionsIsConnectionsList(self):
+        # conn_list should be a list
+        self.assertTrue(isinstance(self.validConnections, ConnectionsList), "The result of FileHandler().readFileConnections is not a ConnectionsList")
 
-    def test_get_nameDestination(self):
-        self.assertEqual(self.conn.get_nameDestination(), "Destination")
+    def test_connectionsIsListOfConnections(self):
+        # assert that elements of conn_list are of type stations.Connection
+        self.assertTrue(all(isinstance(conn, Connection) for conn in self.validConnections.get_connections()), "Elements of the result list of FileHandler().readFileConnections are not of type stations.Connection")
 
-class TestConnectionsList(unittest.TestCase):
-    def setUp(self):
-        self.conn_list = ConnectionsList([])
+    def test_connectionsReadAllConnections(self):
+        message = "The return of FileHandler().readFileConnections number of connections is not as expected. Expected 5, got" + str(len(self.validConnections.get_connections()))
+        self.assertEqual(len(self.validConnections.get_connections()), 5, message)
 
-    def test_add_connection(self):
-        self.conn_list.add_connection(Connection("Start", "Destination"))
-        self.assertEqual(len(self.conn_list.get_connections()), 1)
+    def test_connectionsIsAsExpected(self):
+        # assert that the connections are as expected
+        self.assertEqual(str(self.validConnections.get_connections()[0]), "(Cedro, Queimada)", "The first connection is not as expected")
+
 
 class TestStation(unittest.TestCase):
     def setUp(self):
         self.stationWithNonExistingLink = Station(stationA[0], stationA[1], stationA[2] + 
-                            [('nonexistingStationId', 15)])
+                            [(nonExistingStationId, 15)])
         self.stationEmpty = Station(stationA[0], stationA[1], [])
 
     def test_get_id(self):
@@ -57,19 +70,11 @@ class TestStation(unittest.TestCase):
         self.assertEqual(self.stationEmpty.get_name(), stationA[1])
 
     def test_get_connected(self):
-        self.assertEqual(self.stationWithNonExistingLink.get_connected(), stationA[2]+ [('nonexistingStationId', 15)])
-        self.assertEqual(self.stationEmpty.get_connected(), [])
+        nonExistingStationId = "nonexistingStationId"
+        self.assertEqual(self.stationWithNonExistingLink.get_connectedStringsList(), stationA[2]+ [(nonExistingStationId, 15)])
 
-class TestNetwork(unittest.TestCase):
-    def setUp(self):
-        self.network = Network([])
+        self.assertEqual(self.stationEmpty.get_connectedStringsList(), [], self.stationEmpty.get_connectedStringsList())
 
-    def test_add_station(self):
-        self.network.add_station(Station(1, "Station1", "Station2"))
-        self.assertEqual(len(self.network.get_network()), 1)
-
-    def test_getBestPath(self):
-        pass
 
 if __name__ == '__main__':
     unittest.main()
