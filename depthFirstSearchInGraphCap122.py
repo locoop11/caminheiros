@@ -51,7 +51,10 @@ class Digraph(object):
             raise ValueError('Node not in graph')
         self.edges[src].append([dest, cost])
     def childrenOf(self, node):
-        return self.edges[node]
+        if node in self.edges:
+            return list(self.edges[node].items())
+        else:
+            return []
     def hasNode(self, node):
         return node in self.nodes
 
@@ -76,26 +79,22 @@ def printPath(path):
 
 
 
-def DFS(graph, start, end, path, shortest):
-    """
-    Requires:
-    graph a Digraph;
-    start and end nodes;
-    path and shortest lists of nodes
-    Ensures:
-    a shortest path from start to end in graph
-    """
+def DFS(graph, start, end, path, shortest, pathCost, shortestCost):
     path = path + [start]
     print('Current DFS path:', printPath(path))
     if start == end:
         return path
-    for node in graph.childrenOf(start):
+    for node, cost in graph.childrenOf(start):
         if node not in path: #avoid cycles
-            if shortest == None or len(path) < len(shortest):
-                newPath = DFS(graph, node, end, path, shortest)
+            if shortest == None or pathCost + cost < shortestCost:
+                newPath = DFS(graph, node, end, path, shortest, pathCost + cost, shortestCost)
                 if newPath != None:
                     shortest = newPath
+                    shortestCost = pathCost + cost
     return shortest
+
+def search(graph, start, end):
+    return DFS(graph, start, end, [], None, 0, float('inf'))
 
  
 
