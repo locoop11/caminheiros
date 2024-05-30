@@ -1,4 +1,4 @@
-A, Seixal, [(A, 15), (C, 8), (B, 12)]
-C, Pico Ruivo, [(D, 32), (A, 5)]
-D, Queimadas, [(E, 18), (C, 11)]
-E, Ponta do Pargo, [(B, 13)]
+A, Seixal, [(D, 15), (C, 8), (B, 12)]
+B, Pico Ruivo, [(C, 32), (A, 5)]
+C, Queimadas, [(A, 18), (B, 11)]
+D, Ponta do Pargo, [(A, 13)]

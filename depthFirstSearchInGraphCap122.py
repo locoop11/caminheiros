@@ -10,7 +10,7 @@ class Node(object):
     def getName(self):
         return self.name
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 
@@ -48,7 +48,7 @@ class Digraph(object):
         dest = edge.getDestination()
         cost = edge.getCost()
         if not(src in self.nodes and dest in self.nodes):
-            raise ValueError('Node not in graph')
+            raise ValueError('Node ' + str(src) + ' not in graph')
         
         existingEdges = self.edges[src]
         for (n, cost) in existingEdges:
@@ -98,7 +98,7 @@ def DFS(graph, start, end, path, shortest, cost=0, allPaths={}):
     a shortest path from start to end in graph
     """
     path = path + [start]
-    print('Current DFS path:', printPath(path), 'TC:', cost)
+    #if verbose: print('Current DFS path:', printPath(path), 'TC:', cost)
     if start == end:
         return (path, allPaths)
     
@@ -109,11 +109,13 @@ def DFS(graph, start, end, path, shortest, cost=0, allPaths={}):
             if shortest == None or len(path) < len(shortest):
                 (newPath, allPaths) = DFS(graph, edge, end, path, shortest, pathCost, allPaths)
                 if newPath != None:
-                    if str(newPath) not in allPaths :
+                    if str(newPath) not in allPaths.keys() :
                         allPaths[str(newPath)] = (newPath, pathCost)
                     pathCost = cost - edgeCost
                     shortest = newPath
-    return (shortest, allPaths) 
+    return (shortest, allPaths)
+
+ 
 
 def search(graph, start, end):
     """
@@ -153,10 +155,9 @@ def testSP():
     (shortest, allPaths) = search(g, nodes[0], nodes[5])
     print('Shortest path found by DFS:', printPath(shortest))
 
+    print(str(len(allPaths)) + ' number of paths found')
+
     for key in allPaths.keys():
         print('Path:', printPath(allPaths[key][0]), " with cost ", allPaths[key][1])    
 
-testSP()
 
-    
-    
