@@ -19,10 +19,10 @@ class runner ():
 
         dicBestConnections = {}
         for conn in connections:
-            bestConnections = network.getBestPath(conn)
-            dicBestConnections[conn] = bestConnections
+            bestPath = network.getBestPath(conn)
+            dicBestConnections[conn] = bestPath
 
-        FileHandler.saveBestResults(self.resultsFileName, dicBestConnections)
+        FileHandler.saveBestResults(self.resultFileName, dicBestConnections)
 
         
         

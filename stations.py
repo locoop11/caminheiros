@@ -91,24 +91,24 @@ class Network (object):
         """
         return (time, path)
         """
-        starting_station = None
-        destination_station = None
+        startingStation = None
+        destinationStation = None
 
         for station in self.network:
             if station.get_name() == connection.get_nameStarting():
-                starting_station = station
+                startingStation = station
             if station.get_name() == connection.get_nameDestination():
-                destination_station = station
-        if starting_station == None:
+                destinationStation = station
+        if startingStation == None:
             raise ValueError(connection.get_nameStarting() + ' out of the network')
-        if destination_station == None:
+        if destinationStation == None:
             raise ValueError(connection.get_nameDestination + ' out of the network')
-
-        paths = dfs.DFS(starting_station.get_node(), destination_station.get_node(), 3)
+        #assumindo que path sao todos os caminhos possiveis no formato (path, time)
+        paths = dfs.DFS(startingStation.get_node(), destinationStation.get_node(), 3)
         
         orderedPaths = sorted(paths, key=lambda x: x[1])
         
-        
+
 
             
 
