@@ -7,20 +7,19 @@ class FileHandler:
     
     
     
-    def readFileConnections(self, file_name):
+    def readFileConnections(self, file_name, associatedNetwork):
         """
         Requires: file_name is a string with the name of the file
         Ensures: a list of objects of class Connections
         """
-        file = open(file_name, 'r')
-        connections = stations.ConnectionsList([])
-        for line in file:
-            line = line.strip()
-            line = line.split(' - ')
-            connection = stations.Connection(line[0], line[1])
-            connections.add_connection(connection)
-        file.close()
-        return connections
+        with open(file_name, 'r') as file:
+            connections = stations.ConnectionsList([])
+            for line in file:
+                line = line.strip()
+                line = line.split(' - ')
+                connection = stations.Connection(line[0], line[1], associatedNetwork)
+                connections.add_connection(connection)
+            return connections
         
     def readFileNetwork(self, file_name):
         """
@@ -82,8 +81,12 @@ class FileHandler:
         for key in dicBestConnections:
             file.write('# ' + key + ':\n')
             for path in dicBestConnections[key]:
-                file.write(path[1] + ', ' + path[0] + '\n')
+                if path.length == 1:
+                    file.write(path + '\n')
+                else:
+                    file.write(path[1] + ', ' + path[0] + '\n')
         file.close()
+
  
         
 

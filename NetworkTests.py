@@ -47,9 +47,57 @@ class  TestNetwork(unittest.TestCase):
         network = self.validNetwork
         # assert that the network is as expected
         station0 = network.get_network()[0]
-        print(str(station0))
         self.assertEqual(str(station0), 'A, Seixal, [(D, 15), (C, 8), (B, 12)]', "The first station id is not as expected when converted to String")
        
+
+    def test_getBestPaths(self):
+        network = self.validNetwork
+        print(network.get_network())
+        connection = Connection('Ponta do Pargo', 'Queimadas', network)
+        k = 3
+        bestPaths = network.getBestPaths(connection, k)
+        # Assert that we find only one network with cost 30
+        self.assertEqual(len(bestPaths), 1, "The number of best paths is not as expected")
+        self.assertEqual(bestPaths[0][1], 30, "The cost of the best path is not as expected")
+        # assert that the path found is DAC
+        self.assertEqual(dfs.printPath((bestPaths[0][0])), "D->A->C", "The best path is not as expected")
+
+    def test_connectionNotInNetwork(self):
+        network = self.validNetwork
+        connection = Connection('Porto', 'Lisboa', network)
+        k = 3
+        bestPaths = network.getBestPaths(connection, k)
+        #Assert that bestPaths returns a list with one element that is a string saying that the connection is out of the network
+        self.assertEqual(len(bestPaths), 1, "The number of best paths is not as expected")
+        self.assertEqual(bestPaths[0], "Porto and Lisboa out of the network", "The best path is not as expected should be 'Porto and Lisboa out of the network'")
+        connection2 = Connection('Porto', 'Queimadas', network)
+        k = 3
+        bestPaths = network.getBestPaths(connection2, k)
+        #Assert that bestPaths returns a list with one element that is a string saying that the connection is out of the network
+        self.assertEqual(len(bestPaths), 1, "The number of best paths is not as expected")
+        self.assertEqual(bestPaths[0], "Porto out of the network", "The best path is not as expected should be 'Porto out of the network'")
+        connection3 = Connection('Queimadas', 'Lisboa', network)
+        k = 3
+        bestPaths = network.getBestPaths(connection3, k)
+        #Assert that bestPaths returns a list with one element that is a string saying that the connection is out of the network
+        self.assertEqual(len(bestPaths), 1, "The number of best paths is not as as expected")
+        self.assertEqual(bestPaths[0], "Lisboa out of the network", "The best path is not as expected should be 'Porto out of the network'")
+    def teste_ConnectionEmpyConnection(self):
+        network = self.validNetwork
+        connection = Connection(None, None, network)
+        k = 3
+        with self.assertRaises(ValueError):
+            network.getBestPaths(connection, k)
+
+
+
+    
+
+
+        
+    
+        
+
 
 if __name__ == '__main__':
     unittest.main()

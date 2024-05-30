@@ -33,7 +33,12 @@ class TestConnections(unittest.TestCase):
         self.validConnections = None
 
         try:
-            self.validConnections = FileHandler().readFileConnections(self.validConnectionsTestFileName)
+            for i in range(0, 4):
+                stationA = Station("A", "Seixal", [('B', 15)])
+                stationB = Station("B", "Porto Moniz", [('A', 12)])
+            network = Network([stationA, stationB])
+            networkList = network.get_network()
+            self.validConnections = FileHandler().readFileConnections(self.validConnectionsTestFileName, networkList)
         except Exception as e:
             errorMessage = f"Error: {str(e)}"
             self.assertTrue(False, "An error occurred while invoking FileHandler().readFileConnections with test file " + self.validConnectionsTestFileName + ". " + errorMessage)

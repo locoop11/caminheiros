@@ -1,18 +1,35 @@
 import depthFirstSearchInGraphCap122 as dfs
 
 class Connection (object):
-    def __init__(self, nameStarting, nameDestination):
-        self.nameStarting = nameStarting
-        self.nameDestination = nameDestination
+    def __init__(self, nameStarting, nameDestination, associatedNetwork):
+        self.stationStarting = self.transformToStation(nameStarting, associatedNetwork)
+        self.stationDestination = self.transformToStation(nameDestination, associatedNetwork)
+        self.associatedNetwork = associatedNetwork
+        self.nameStartingString = nameStarting
+        self.nameDestinationString = nameDestination
         
-    def get_nameStarting(self):
-        return self.nameStarting
-    def get_nameDestination(self):
-        return self.nameDestination
+
+    
+    
+    def transformToStation(self, name, associatedNetwork):
+        for station in associatedNetwork.get_network():
+            if station.get_name() == name:
+                return station
+         
+
+
+    def get_nameStartingString(self):
+        return self.nameStartingString
+    def get_nameDestinationString(self):
+        return self.nameDestinationString
+    def get_stationStarting(self):
+        return self.stationStarting
+    def get_stationDestination(self):
+        return self.stationDestination
     def __str__(self):
-        return "(" + self.nameStarting +(", ")+ self.nameDestination + ")"
+        return "(" + self.stationStarting +(", ")+ self.stationDestination + ")"
     def __repr__(self):
-        return "(" + self.nameStarting +(", ")+ self.nameDestination + ")"
+        return "(" + self.stationStarting +(", ")+ self.stationDestination + ")"
     
 class ConnectionsList (object):
     def __init__(self, connections):
@@ -94,21 +111,35 @@ class Network (object):
         """
         startingStation = None
         destinationStation = None
+        if connection.get_nameStartingString() == None and connection.get_nameDestinationString() == None:
+            raise ValueError("Connection starting point and destination point is empty")
+        if connection.get_nameStartingString() == None:
+            raise ValueError("Connection starting point is empty")
+        if connection.get_nameDestinationString() == None:
+            raise ValueError("Connection destination point is empty")
+
+        if connection.get_stationStarting() == None and connection.get_stationDestination() == None:
+            orderedPaths = [connection.get_nameStartingString() + " and " + connection.get_nameDestinationString() + " out of the network"]
+            return orderedPaths
+        if connection.get_stationStarting() == None:
+            orderedPaths = [connection.get_nameStartingString() + " out of the network"]
+            return orderedPaths
+        if connection.get_stationDestination() == None:
+            orderedPaths = [connection.get_nameDestinationString() + " out of the network"]
+            return orderedPaths
 
         for station in self.network:
-            if station.get_name() == connection.get_nameStarting():
+            if station.get_name() == connection.get_stationStarting().get_name():
                 startingStation = station
-            if station.get_name() == connection.get_nameDestination():
+            if station.get_name() == connection.get_stationDestination().get_name():
                 destinationStation = station
-        if startingStation == None:
-            orderedPaths = [connection.get_nameStarting + "out of the network"]
-            return orderedPaths
-        if destinationStation == None:
-            orderedPaths = [connection.get_nameDestination + "out of the network"]
-            return orderedPaths
+    
         #assumindo que path sao todos os caminhos possiveis no formato (path, time)
-        paths = dfs.DFS(startingStation.get_node(), destinationStation.get_node(), 3)
-        
+        (shortestPath, allPaths)= dfs.DFS(self.graph, startingStation.get_node(), destinationStation.get_node(), [], None)
+        paths = []
+        for path in allPaths.values():
+            paths.append(path)
+
         orderedPaths = sorted(paths, key=lambda x: x[1])
         
         if k > len(orderedPaths):
@@ -123,9 +154,6 @@ class Network (object):
         return orderedPaths
             
     
-    
-
-
     def get_network(self):
         return self.network
     def __str__(self):
