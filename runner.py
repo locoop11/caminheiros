@@ -4,10 +4,11 @@ import depthFirstSearchInGraphCap122 as dfs
 
 
 class runner ():
-    def __innit__(self, networkFileName, connectionsFileName, resultFileName):
+    def __innit__(self, networkFileName, connectionsFileName, resultFileName, k):
         self.networkFileName = networkFileName
         self.connectionsFileName = connectionsFileName
         self.resultFileName = resultFileName
+        self.k = k
 
         #TODO: Verificar se os ficheiros existem caso contrario raise exception
     
@@ -19,7 +20,7 @@ class runner ():
 
         dicBestConnections = {}
         for conn in connections:
-            bestPath = network.getBestPath(conn)
+            bestPath = network.getBestPath(conn, self.k)
             dicBestConnections[conn] = bestPath
 
         FileHandler.saveBestResults(self.resultFileName, dicBestConnections)

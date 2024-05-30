@@ -80,9 +80,9 @@ class FileHandler:
         """
         file = open(file_name, 'w')
         for key in dicBestConnections:
-            file.write(key + ':\n')
+            file.write('# ' + key + ':\n')
             for path in dicBestConnections[key]:
-                file.write(path + '\n')
+                file.write(path[1] + ', ' + path[0] + '\n')
         file.close()
  
         

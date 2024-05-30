@@ -87,7 +87,7 @@ class Network (object):
                 graph.addEdge(edge)       
         return graph
     
-    def getBestPaths(self, connection):
+    def getBestPaths(self, connection, k):
         """
         return (time, path)
         """
@@ -100,14 +100,19 @@ class Network (object):
             if station.get_name() == connection.get_nameDestination():
                 destinationStation = station
         if startingStation == None:
-            raise ValueError(connection.get_nameStarting() + ' out of the network')
+            orderedPaths = [connection.get_nameStarting + "out of the network"]
+            return orderedPaths
         if destinationStation == None:
-            raise ValueError(connection.get_nameDestination + ' out of the network')
+            orderedPaths = [connection.get_nameDestination + "out of the network"]
+            return orderedPaths
         #assumindo que path sao todos os caminhos possiveis no formato (path, time)
         paths = dfs.DFS(startingStation.get_node(), destinationStation.get_node(), 3)
         
         orderedPaths = sorted(paths, key=lambda x: x[1])
         
+        if k > len(orderedPaths):
+            k = len(orderedPaths)
+        orderedPaths = orderedPaths[:k]
 
 
             
