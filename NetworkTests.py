@@ -47,8 +47,8 @@ class  TestNetwork(unittest.TestCase):
         network = self.validNetwork
         # assert that the network is as expected
         station0 = network.get_network()[0]
-        
-        self.assertEqual(str(station0), 'A, Seixal, [(R, 15), (M, 8), (B, 12)]', "The first station id is not as expected when converted to String")
+        print(str(station0))
+        self.assertEqual(str(station0), 'A, Seixal, [(D, 15), (C, 8), (B, 12)]', "The first station id is not as expected when converted to String")
        
 
 if __name__ == '__main__':

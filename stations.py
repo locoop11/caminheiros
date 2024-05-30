@@ -12,7 +12,7 @@ class Connection (object):
     def __str__(self):
         return "(" + self.nameStarting +(", ")+ self.nameDestination + ")"
     def __repr__(self):
-        return self.__str__()
+        return "(" + self.nameStarting +(", ")+ self.nameDestination + ")"
     
 class ConnectionsList (object):
     def __init__(self, connections):
@@ -63,7 +63,7 @@ class Station (object):
     def get_connectedNodesCostList(self):
         return self.connectedNodesCostList
     def __str__(self):
-        return self.__str__()
+        return self.id + ", " + self.name + ", " + str(self.connectedStringsList).replace("'", "")
     
 
 class Network (object):
@@ -80,6 +80,7 @@ class Network (object):
         graph = dfs.Graph()
         for station in self.network:
             graph.addNode(station.get_node())
+        for station in self.network:
             for connectedNodeCost in station.get_connectedNodesCostList():
                 connectedNode = connectedNodeCost[0]
                 connectedCost = connectedNodeCost[1]
@@ -128,7 +129,7 @@ class Network (object):
     def get_network(self):
         return self.network
     def __str__(self):
-        return self.__str__()
+        return str(self.graph)
     
 
 
