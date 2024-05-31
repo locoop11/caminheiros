@@ -1,3 +1,7 @@
+# 2023-2024 Programacao 2 LTI
+# Grupo 42
+# 60253 Hugo Silva
+# 60232 DUarte Correia
 import random
 import unittest
 from depthFirstSearchInGraphCap122 import *
