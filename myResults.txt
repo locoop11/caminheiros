@@ -1,0 +1,12 @@
+# Seixal - NONEXISTINGCITY:
+NONEXISTINGCITY out of the network
+# Seixal - Queimadas:
+15, Seixal, Queimadas
+# Bico Ruivo - Seixal:
+12, Bico Ruivo, Seixal
+# Donta do Pargo - Queimadas:
+30, Donta do Pargo, Seixal, Queimadas
+# Bico Ruivo - Donta do Pargo:
+27, Bico Ruivo, Seixal, Donta do Pargo
+# Porto - Queimadas:
+Porto out of the network

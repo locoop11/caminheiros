@@ -49,11 +49,23 @@ class  TestNetwork(unittest.TestCase):
         station0 = network.get_network()[0]
         self.assertEqual(str(station0), 'A, Seixal, [(D, 15), (C, 8), (B, 12)]', "The first station id is not as expected when converted to String")
        
-
-    def test_getBestPaths(self):
+    def test_outOfNetwork(self):
         network = self.validNetwork
         print(network.get_network())
         connection = Connection('Ponta do Pargo', 'Queimadas', network)
+        k = 3
+        bestPaths = network.getBestPaths(connection, k)
+        #Assert that bestPaths returns a list with one element that is a string saying that the connection is out of the network   
+        self.assertEqual(bestPaths[0], "Ponta do Pargo out of the network", "Unexpected optimal path")
+
+        connection2 = Connection('XPTO', 'XPTO2', network)
+        bestPaths = network.getBestPaths(connection2, k)
+        self.assertEqual(bestPaths[0], "XPTO and XPTO2 out of the network", "Unexpected optimal path")
+        
+    def test_getBestPaths(self):
+        network = self.validNetwork
+        print(network.get_network())
+        connection = Connection('Donta do Pargo', 'Queimadas', network)
         k = 3
         bestPaths = network.getBestPaths(connection, k)
         # Assert that we find only one network with cost 30

@@ -27,9 +27,7 @@ class Connection (object):
     def get_stationDestination(self):
         return self.stationDestination
     def __str__(self):
-        return "(" + self.stationStarting +(", ")+ self.stationDestination + ")"
-    def __repr__(self):
-        return "(" + self.stationStarting +(", ")+ self.stationDestination + ")"
+        return "(" + self.get_nameStartingString() +(", ")+ self.get_nameDestinationString() + ")"
     
 class ConnectionsList (object):
     def __init__(self, connections):
@@ -92,6 +90,11 @@ class Network (object):
     def add_station(self, station):
         self.network.append(station)
     
+    def getStationById(self, id):
+        for station in self.network:
+            if station.get_id() == id:
+                return station
+        return None
     
     def createGraph(self):
         graph = dfs.Graph()
@@ -135,7 +138,7 @@ class Network (object):
                 destinationStation = station
     
         #assumindo que path sao todos os caminhos possiveis no formato (path, time)
-        (shortestPath, allPaths)= dfs.DFS(self.graph, startingStation.get_node(), destinationStation.get_node(), [], None)
+        (shortestPath, allPaths)= dfs.DFS(self.graph, startingStation.get_node(), destinationStation.get_node(), [], None, 0, {})
         paths = []
         for path in allPaths.values():
             paths.append(path)

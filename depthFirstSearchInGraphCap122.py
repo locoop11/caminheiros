@@ -1,4 +1,4 @@
-
+from stations import *
 
 
 class Node(object):
@@ -82,6 +82,22 @@ def printPath(path):
     result = ''
     for i in range(len(path)):
         result = result + str(path[i])
+        if i != len(path) - 1:
+            result = result + '->'
+    return result
+
+def printNetworkPath(path, network):
+    """
+    Requires: path a list of nodes
+    """
+    result = ''
+    for i in range(len(path)):
+        station = network.getStationById(path[i].getName())
+        stationName = str(path[i])
+        if ( station != None ):
+            stationName = station.get_name()
+
+        result = result + str(stationName)
         if i != len(path) - 1:
             result = result + '->'
     return result

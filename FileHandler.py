@@ -56,6 +56,8 @@ class FileHandler:
     
     def getConnectionsList(self, stringListOfConnecctions): 
         listOfConnections = stringListOfConnecctions
+        if( listOfConnections == '[]' or listOfConnections == '[ ]'):
+            return [()]
 
         # remove '[(' and ')]' from the string
         listOfConnections = listOfConnections.replace('[(', '')
@@ -72,19 +74,26 @@ class FileHandler:
 
         return connections
 
-    def saveBestResults(self, file_name, dicBestConnections):
+    def saveBestResults(self, file_name, dicBestConnections, network):
         """
         Requires: file_name is a string with the name of the file
         Ensures: a file with the best connections
         """
         file = open(file_name, 'w')
-        for key in dicBestConnections:
-            file.write('# ' + key + ':\n')
-            for path in dicBestConnections[key]:
-                if path.length == 1:
+        for conn in dicBestConnections.keys():
+            if( not conn.get_stationDestination() or not conn.get_stationStarting() ):
+                file.write('# ' + conn.get_nameStartingString() + ' - ' + conn.get_nameDestinationString() + ':\n')
+                file.write(dicBestConnections[conn][0] + '\n')
+                continue
+            else :
+                connString = str(conn).replace('(', '').replace(')', '').replace(",", ' -')
+                file.write('# ' + connString + ':\n')
+            for path in dicBestConnections[conn]:
+                if len(path) == 1:
                     file.write(path + '\n')
                 else:
-                    file.write(path[1] + ', ' + path[0] + '\n')
+                    results = dfs.printNetworkPath(path[0], network).replace('->', ', ')
+                    file.write(str(path[1]) + ', ' + results + '\n')
         file.close()
 
  

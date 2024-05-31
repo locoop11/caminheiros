@@ -3,8 +3,8 @@ import stations as stations
 import depthFirstSearchInGraphCap122 as dfs
 
 
-class runner ():
-    def __innit__(self, networkFileName, connectionsFileName, resultFileName, k):
+class Runner ():
+    def __init__(self, networkFileName, connectionsFileName, resultFileName, k):
         self.networkFileName = networkFileName
         self.connectionsFileName = connectionsFileName
         self.resultFileName = resultFileName
@@ -16,19 +16,23 @@ class runner ():
     def run(self):
         FileHandler = fh.FileHandler()
         network = FileHandler.readFileNetwork(self.networkFileName)
-        connections = FileHandler.readFileConnections(self.connectionsFileName, network.get_network())
+        connections = FileHandler.readFileConnections(self.connectionsFileName, network)
         
 
         dicBestConnections = {}
-        for conn in connections:
-            bestPath = network.getBestPath(conn, self.k)
+        for conn in connections.get_connections():
+            bestPath = network.getBestPaths(conn, self.k)
             dicBestConnections[conn] = bestPath
 
-        FileHandler.saveBestResults(self.resultFileName, dicBestConnections)
+        FileHandler.saveBestResults(self.resultFileName, dicBestConnections, network)
 
         
         
             
+if __name__ == "__main__":
+    runner = Runner('tests/myLevadasNetwork.txt', 'tests/myStations.txt', 'myResults.txt', 3)
+    runner.run()
+    
 
 
         

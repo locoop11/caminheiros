@@ -37,8 +37,9 @@ class TestConnections(unittest.TestCase):
                 stationA = Station("A", "Seixal", [('B', 15)])
                 stationB = Station("B", "Porto Moniz", [('A', 12)])
             network = Network([stationA, stationB])
-            networkList = network.get_network()
-            self.validConnections = FileHandler().readFileConnections(self.validConnectionsTestFileName, networkList)
+            
+            self.validConnections = ConnectionsList([])
+            self.validConnections = FileHandler().readFileConnections(self.validConnectionsTestFileName, network)
         except Exception as e:
             errorMessage = f"Error: {str(e)}"
             self.assertTrue(False, "An error occurred while invoking FileHandler().readFileConnections with test file " + self.validConnectionsTestFileName + ". " + errorMessage)
@@ -52,12 +53,12 @@ class TestConnections(unittest.TestCase):
         self.assertTrue(all(isinstance(conn, Connection) for conn in self.validConnections.get_connections()), "Elements of the result list of FileHandler().readFileConnections are not of type stations.Connection")
 
     def test_connectionsReadAllConnections(self):
-        message = "The return of FileHandler().readFileConnections number of connections is not as expected. Expected 5, got" + str(len(self.validConnections.get_connections()))
-        self.assertEqual(len(self.validConnections.get_connections()), 5, message)
+        message = "The return of FileHandler().readFileConnections number of connections is not as expected. Expected 6, got " + str(len(self.validConnections.get_connections()))
+        self.assertEqual(len(self.validConnections.get_connections()), 6, message)
 
     def test_connectionsIsAsExpected(self):
         # assert that the connections are as expected
-        self.assertEqual(str(self.validConnections.get_connections()[0]), "(Cedro, Queimada)", "The first connection is not as expected")
+        self.assertEqual(str(self.validConnections.get_connections()[0]), "(Seixal, NONEXISTINGCITY)", "The first connection is not as expected")
 
 
 class TestStation(unittest.TestCase):
@@ -80,6 +81,14 @@ class TestStation(unittest.TestCase):
 
         self.assertEqual(self.stationEmpty.get_connectedStringsList(), [], self.stationEmpty.get_connectedStringsList())
 
+    def test_getStationById(self):
+        stationA = Station("A", "Seixal", [])
+        stationB = Station("B", "Porto Moniz", [])
+
+        network = Network([stationA, stationB])
+        self.assertEqual(network.getStationById("A").get_name(), "Seixal")
+        self.assertEqual(network.getStationById("B"), stationB)
+        self.assertEqual(network.getStationById("C"), None)
 
 if __name__ == '__main__':
     unittest.main()
