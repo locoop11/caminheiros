@@ -2,6 +2,14 @@ import os
 from runner import Runner
 import sys
 
+def printUsage(message):
+    print(message)
+    print("Usage: python refresh.py <network filename> <connections filename> <output filename>")
+    print("    <network filename>: Mandatory parameter. The name of the file with the network information in the form *LevadasNetwork*.txt")
+    print("    <connections filename>: Mandatory parameter. The name of the file with the connections information in the form *Stations*.txt")
+    print("    <output filename>: Mandatory parameter. The name of the file where the results will be saved in the form *Results*.txt")
+    print("\n Environment Variables:\n   <NUMBER_OF_BEST_PATHS>: Optional parameter. The number of best paths to be saved. Default value is 3.")
+
 
 def main():
     """
@@ -11,9 +19,8 @@ def main():
     with the list of doctors, the list of birth assistances and the list of requests, respectively.
     """
     # Check if the correct number of command-line arguments are provided
-    if len(sys.argv) != 5:
-        print("Error: invalid number of arguments.")
-        print("Usage: python refresh.py <doctors filename> <schedule filename> <requests filename>")
+    if len(sys.argv) != 4:
+        printUsage("Usage Error: Invalid number of arguments.")
         return
     
     # Extract the file names from the command-line arguments
@@ -29,21 +36,21 @@ def main():
     except ValueError:
         k = 3
         return
-    
+    print(sys.argv)
     for file in sys.argv:
-        if file.find("myLevadasNetwork") != -1:
+        if file.find("LevadasNetwork") != -1:
             networkFileName = file
-        if file.find("myStations") != -1:
+        if file.find("Stations") != -1:
             connectionsFileName = file
-        if file.find("myResults") != -1:
+        if file.find("Results") != -1:
             resultFileName = file
+    
     if( networkFileName == "" or connectionsFileName == "" or resultFileName == ""):
-        print("Usage Error: Missing mandatory file.")
-        print("Usage: python refresh.py <doctors filename> <schedule filename> <requests filename>")
+        printUsage("Usage Error: Missing mandatory file.")
         exit(1)
     try:
         #"Para os testes" runner = Runner("./testSets_v1/testSet1/doctors10h00.txt", "./testSets_v1/testSet1/requests10h30.txt", "./testSets_v1/testSet1/schedule10h00.txt")
-        runner = Runner(networkFileName, connectionsFileName, resultFileName)
+        runner = Runner(networkFileName, connectionsFileName, resultFileName, k)
         runner.run()
         
 
